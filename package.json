@@ -26,7 +26,8 @@
         "hamt": "0.1.x",
         "hamt_plus": "0.0.x",
         "mori": "0.3.x",
-        "immutable": "3.6.x"
+        "immutable": "3.6.x",
+        "seamless-immutable": "2.0.1"
     },
     
     "scripts": {

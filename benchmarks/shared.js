@@ -4,7 +4,7 @@ var hamt_plus = require('hamt_plus');
 var p = require('persistent-hash-trie');
 var mori = require('mori');
 var immutable = require('immutable');
-
+var seamlessImmutable = require('seamless-immutable');
 
 
 exports.hamtFrom = function(keys) {
@@ -46,5 +46,15 @@ exports.immutableFrom = function(keys) {
     var h = immutable.Map();
     for (var i = keys.length - 1; i >= 0; --i)
         h = h.set(keys[i], i);
+    return h;
+};
+
+exports.seamlessImmutableFrom = function(keys) {
+    var h = seamlessImmutable({});
+    for (var i = keys.length - 1; i >= 0; --i) {
+        var obj = {};
+        obj[keys[i]] = i;
+        h = h.merge(obj);
+    }
     return h;
 };

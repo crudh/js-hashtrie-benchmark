@@ -9,6 +9,7 @@ var hamt_plus = require('hamt_plus');
 var p = require('persistent-hash-trie');
 var mori = require('mori');
 var immutable = require('immutable');
+var seamlessImmutable = require('seamless-immutable');
 
 var words = require('./words').words;
 var api = require('./shared');
@@ -57,6 +58,13 @@ var immutableKeys = function(keys) {
     };
 };
 
+var seamlessImmutableKeys = function(keys) {
+    var h = api.seamlessImmutableFrom(keys);
+    return function() {
+        Object.keys(h);
+    };
+};
+
 
 module.exports = function(sizes) {
     return sizes.reduce(function(b, size) {
@@ -78,8 +86,11 @@ module.exports = function(sizes) {
                 moriKeys(keys))
             
             .add('immutable(' + size + ')',
-                immutableKeys(keys));
-            
+                immutableKeys(keys))
+
+            .add('seamlessImmutable(' + size + ')',
+                seamlessImmutableKeys(keys));
+
             
     }, new Benchmark.Suite('Keys'));
 };
