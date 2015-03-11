@@ -64,12 +64,26 @@ var immutablePutAll = function(keys) {
 
 var seamlessImmutablePutAll = function(keys) {
     return function() {
-        var h = seamlessImmutable({})
+        var h = seamlessImmutable({});
         for (var i = 0, len = keys.length; i < len; ++i) {
             var obj = {};
             obj[keys[i]] = i;
             h = h.merge(obj);
         }
+    };
+};
+
+var seamlessImmutablePutAllBatch = function(keys) {
+    return function() {
+        var h = seamlessImmutable({});
+        var batch = [];
+        for (var i = 0, len = keys.length; i < len; ++i) {
+            var obj = {};
+            obj[keys[i]] = i;
+            batch.push(obj);
+        }
+
+        h = h.merge(batch);
     };
 };
 
@@ -97,7 +111,10 @@ module.exports = function(sizes) {
                 immutablePutAll(keys))
 
             .add('seamlessImmutable(' + size + ')',
-                seamlessImmutablePutAll(keys));
+                seamlessImmutablePutAll(keys))
+
+            .add('seamlessImmutableBatch(' + size + ')',
+                seamlessImmutablePutAllBatch(keys));
 
     }, new Benchmark.Suite('Put All'));
 };

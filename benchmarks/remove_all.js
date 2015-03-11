@@ -78,6 +78,18 @@ var seamlessImmutableRemoveAll = function(keys, order) {
     };
 };
 
+var seamlessImmutableRemoveAllBatch = function(keys, order) {
+    var h = api.seamlessImmutableFrom(keys);
+    return function() {
+        var c = h;
+        var batch = [];
+        for (var i = 0, len = order.length; i < len; ++i)
+            batch.push(keys[order[i]]);
+
+        c = c.without(batch);
+    };
+};
+
 
 module.exports = function(sizes) {
     return sizes.reduce(function(b,size) {
@@ -103,7 +115,10 @@ module.exports = function(sizes) {
                 immutableRemoveAll(keys, order))
 
             .add('seamlessImmutable(' + size + ')',
-                seamlessImmutableRemoveAll(keys, order));
+                seamlessImmutableRemoveAll(keys, order))
+
+            .add('seamlessImmutableBatch(' + size + ')',
+                seamlessImmutableRemoveAllBatch(keys, order));
 
     }, new Benchmark.Suite('Remove All'));
 };
