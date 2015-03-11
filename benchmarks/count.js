@@ -59,7 +59,7 @@ var immutableCount = function(keys) {
 var seamlessImmutableCount = function(keys) {
     var h = api.seamlessImmutableFrom(keys);
     return function() {
-        h.length;
+        Object.keys(h).length;
     };
 };
 
